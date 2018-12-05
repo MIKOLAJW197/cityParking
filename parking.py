@@ -46,13 +46,11 @@ def distanceMeasurement(TRIG,ECHO):
 
 
 def openServo():
-    desiredAngle = 10
-    dutyCycle = 1. / 18. * desiredAngle + 2
+    dutyCycle = 12
     PWM.set_duty_cycle(servoPin, dutyCycle)
 
 def closeServo():
-    desiredAngle = 30
-    dutyCycle = 1. / 18. * desiredAngle + 2
+    dutyCycle = 3
     PWM.set_duty_cycle(servoPin, dutyCycle)
 
 def ledOn (ledPin):
