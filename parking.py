@@ -5,18 +5,13 @@ import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.PWM as PWM
 import time
 
-servoPin="P9_14"
-PWM.start(servoPin,5,50)
-
-
 #Configuration czujnika odleglosci
-GPIO.setup("P8_12",GPIO.OUT) #Trigger
-GPIO.setup("P8_11",GPIO.IN)  #Echo
+GPIO.setup("P9_12",GPIO.OUT, initial=GPIO.LOW) #Trigger
+GPIO.setup("P9_15",GPIO.IN, pull_up_down=GPIO.PUD_UP)  #Echo
 
 #SERVO config
 servoPin="P9_14"
-# PWM.start(servoPin,5,50) TODO Sprawdzic jaki zapis powinien byc
-PWM.start(servoPin, 50)
+PWM.start(servoPin,5, 50) #NOTE lub bez tej piatki
 
 #led config
 greenLed = "P8_10"
@@ -24,15 +19,13 @@ redLed = "P8_9"
 GPIO.setup("P8_10", GPIO.OUT) #green
 GPIO.setup("P8_9", GPIO.OUT) #red
 
-#Security
-GPIO.output("P8_12", False)
-time.sleep(0.5)
 
 def distanceMeasurement(TRIG,ECHO):
-
-    GPIO.output(TRIG, True)
+    # Measure the distance between HC-SR04 and nearest wall or solid object.
+    GPIO.output(TRIG, GPIO.HIGH)
     time.sleep(0.00001)
-    GPIO.output(TRIG, False)
+    GPIO.output(TRIG, GPIO.LOW)
+    pulseStart = time.time()
 
     while GPIO.input(ECHO) == 0:
         pulseStart = time.time()
@@ -62,7 +55,7 @@ def ledOff (ledPin):
 #main Loop
 try:
     while True:
-        recoveredDistance = distanceMeasurement("P8_12","P8_11")
+        recoveredDistance = distanceMeasurement("P9_12","P9_15")
         print("Distance: " + recoveredDistance + "cm")
         time.sleep(1)
 except KeyboardInterrupt:
