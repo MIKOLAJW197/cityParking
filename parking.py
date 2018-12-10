@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import _thread
 import time
 
 import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.PWM as PWM
-from flask import Flask
+from flask import Flask, jsonify
 from flask import request
 
 # Configuration czujnika odleglosci
@@ -38,23 +39,27 @@ parking = [
 @app.route('/', methods=['GET'])
 def api_root():
     if request.method == 'GET':
-        return parking, 200
+        return jsonify(parking)
 
 
 @app.route('/block/<id>', methods=['GET'])
 def api_block(id):
     for spot in parking:
-        if (id == spot["id"]):
-            spot["type"] = 3
-    return parking, 200
+        if (int(id) == spot['id']):
+            spot['type'] = 3
+    return jsonify(parking)
 
 
 @app.route('/unblock/<id>', methods=['GET'])
 def api_unblock(id):
     for spot in parking:
-        if (id == spot["id"]):
-            spot["type"] = 1
-    return parking, 200
+        if (int(id) == spot['id']):
+            spot['type'] = 1
+        return jsonify(parking)
+
+
+def serverStart():
+    app.run()
 
 
 def distanceMeasurement(TRIG, ECHO):
@@ -106,4 +111,7 @@ def measureDistanceLoop():
 
 # main Loop
 if __name__ == '__main__':
-    app.run()
+    _thread.start_new_thread(serverStart,())
+    while(1):
+        print()
+
