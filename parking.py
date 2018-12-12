@@ -8,6 +8,7 @@ import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.PWM as PWM
 from flask import Flask, jsonify
 from flask import request
+from flask_cors import CORS, cross_origin
 
 # Configuration czujnika odleglosci
 GPIO.setup("P9_12", GPIO.OUT, initial=GPIO.LOW)  # Trigger
@@ -25,6 +26,8 @@ GPIO.setup("P8_9", GPIO.OUT)  # red
 
 # config of restful-api
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 # note: 1 - wolny/odblokowany , 2 - zajety samochod, 3 - zarezerowwany
 parking = [
@@ -37,12 +40,14 @@ parking = [
 
 
 @app.route('/', methods=['GET'])
+@cross_origin()
 def api_root():
     if request.method == 'GET':
         return jsonify(parking)
 
 
 @app.route('/block/<id>', methods=['GET'])
+@cross_origin()
 def api_block(id):
     for spot in parking:
         if (int(id) == spot['id']):
@@ -51,6 +56,7 @@ def api_block(id):
 
 
 @app.route('/unblock/<id>', methods=['GET'])
+@cross_origin()
 def api_unblock(id):
     for spot in parking:
         if (int(id) == spot['id']):

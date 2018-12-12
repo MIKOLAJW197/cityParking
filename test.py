@@ -1,10 +1,11 @@
-import _thread
-
 from flask import Flask, jsonify
 from flask import request
+from flask_cors import CORS, cross_origin
 
 # config of restful-api
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 # note: 1 - wolny/odblokowany , 2 - zajety samochod, 3 - zarezerowwany
 parking = [
@@ -17,6 +18,7 @@ parking = [
 
 
 @app.route('/', methods=['GET'])
+@cross_origin()
 def api_root():
     if request.method == 'GET':
         return jsonify(parking)
@@ -24,12 +26,14 @@ def api_root():
 
 
 @app.route('/block/<id>', methods=['GET'])
+@cross_origin()
 def api_block(id):
     print(id)
     return jsonify(parking)
 
 
 @app.route('/unblock/<id>', methods=['GET'])
+@cross_origin()
 def api_unblock(id):
     print('super idddd')
     print(type(id))
