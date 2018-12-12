@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {ApiService} from "./api/api.service";
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,21 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  title = 'CityParkingApp';
+  isPreload: boolean;
+  data: any[];
+
+  constructor(private api: ApiService) {
+    this.isPreload = true;
+    this.data = [];
+    this.api.load().subscribe(resp => {
+      this.data = resp;
+      this.isPreload = false;
+      console.log(this.data)
+    })
+  }
+
+  onReserve(any) {
+
+  }
 }
