@@ -7,7 +7,6 @@ import {ApiService} from "./api/api.service";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'CityParkingApp';
   isPreload: boolean;
   data: any[];
 
@@ -17,11 +16,28 @@ export class AppComponent {
     this.api.load().subscribe(resp => {
       this.data = resp;
       this.isPreload = false;
-      console.log(this.data)
     })
   }
 
-  onReserve(any) {
+  onReserve(spot: any) {
+    this.isPreload = true;
+    this.api.blockSpot(spot.id).subscribe(resp => {
+      this.data = resp;
+      this.isPreload = false;
+    })
+  }
 
+  onUnblock(spot: any) {
+    this.isPreload = true;
+    this.api.unBlockSpot(spot.id).subscribe(resp => {
+      this.data = resp;
+      this.isPreload = false;
+    })
+  }
+
+  getParkingSpotStatusIcon(spot: any) {
+    return spot.type === 1
+      ? 'done' : spot.type === 2
+        ? 'error' : 'lock';
   }
 }

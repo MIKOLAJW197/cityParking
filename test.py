@@ -28,19 +28,18 @@ def api_root():
 @app.route('/block/<id>', methods=['GET'])
 @cross_origin()
 def api_block(id):
-    print(id)
+    for spot in parking:
+        if (int(id) == spot['id']):
+            spot['type'] = 3
     return jsonify(parking)
 
 
 @app.route('/unblock/<id>', methods=['GET'])
 @cross_origin()
 def api_unblock(id):
-    print('super idddd')
-    print(type(id))
     for spot in parking:
         if (int(id) == spot['id']):
-            spot['type'] = 100000
-            print('done')
+            spot['type'] = 1
     return jsonify(parking)
 
 

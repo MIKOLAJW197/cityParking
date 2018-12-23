@@ -9,8 +9,13 @@
     </tr>
     <tr *ngFor="let spot of data">
       <th>{{spot.id}}</th>
-      <th>{{spot.type}}</th>
-      <th><button mat-raised-button (click)="onReserve(spot) ">Rezerwuj</button></th>
+      <th>
+        <mat-icon color="primary" [innerHTML]="getParkingSpotStatusIcon(spot)"></mat-icon>
+      </th>
+      <th>
+        <button *ngIf="spot.type === 1" mat-raised-button (click)="onReserve(spot) ">Zablokuj</button>
+        <button *ngIf="spot.type === 3" mat-raised-button (click)="onUnblock(spot) ">Odblokuj</button>
+      </th>
     </tr>
   </table>
 </div>

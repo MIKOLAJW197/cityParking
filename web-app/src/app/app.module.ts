@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import {HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule} from "@angular/material";
+import {MatButtonModule, MatCheckboxModule, MatIconModule, MatProgressSpinnerModule} from "@angular/material";
 
 @NgModule({
   declarations: [
@@ -16,7 +16,8 @@ import {MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule} from "@ang
     BrowserAnimationsModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
