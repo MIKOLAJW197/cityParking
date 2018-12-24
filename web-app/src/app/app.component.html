@@ -13,9 +13,32 @@
         <mat-icon color="primary" [innerHTML]="getParkingSpotStatusIcon(spot)"></mat-icon>
       </th>
       <th>
-        <button *ngIf="spot.type === 1" mat-raised-button (click)="onReserve(spot) ">Zablokuj</button>
-        <button *ngIf="spot.type === 3" mat-raised-button (click)="onUnblock(spot) ">Odblokuj</button>
+        <button *ngIf="spot.type === 1" mat-raised-button (click)="showBlock(spot) ">Zablokuj</button>
+        <button *ngIf="spot.type === 3" mat-raised-button (click)="showUnblock(spot) ">Odblokuj</button>
       </th>
     </tr>
   </table>
 </div>
+<popup #popup1 (confirmClick)="blockSpot(pinBlock.value)" (cancelClick)="cancelPopup()">
+  Podaj swój własny kod w celu blokady miejsca
+  <form>
+    <input
+      #pinBlock
+      type="number"
+      pattern="[0-9]*"
+      inputmode="numeric"
+      style="-webkit-text-security: disc;">
+  </form>
+</popup>
+
+<popup #popup2 (confirmClick)="unblockSpot(pinUnblock.value)" (cancelClick)="cancelPopup()">
+  Podaj kod w celu odblokowania miejsca
+  <form>
+    <input
+      #pinUnblock
+      type="number"
+      pattern="[0-9]*"
+      inputmode="numeric"
+      style="-webkit-text-security: disc;">
+  </form>
+</popup>
