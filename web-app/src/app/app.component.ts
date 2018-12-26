@@ -1,6 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {ApiService} from "./api/api.service";
 import {Popup} from "ng2-opd-popup";
+import {interval} from "rxjs/internal/observable/interval";
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import {Popup} from "ng2-opd-popup";
 })
 export class AppComponent {
   isPreload: boolean;
-  data: any[];
+  data: any;
 
   choosenSpot: any;
   spotPassword: String[];
@@ -19,35 +20,36 @@ export class AppComponent {
 
   constructor(private api: ApiService) {
     this.isPreload = true;
-    this.data = [];
     this.spotPassword = [];
-    this.api.load().subscribe(resp => {
-      this.data = resp;
-      this.isPreload = false;
+    this.data = {
+      id: 1,
+      type: 0
+    };
+    this.loadData();
+    interval(3000).subscribe(x => {
+      this.loadData();
     });
   }
 
   onReserve(spot: any) {
     this.isPreload = true;
     this.api.blockSpot(spot.id).subscribe(resp => {
-      this.data = resp;
-      this.isPreload = false;
-      this.cancelPopup();
-    })
+    });
+    this.cancelPopup();
+    setTimeout(() => this.loadData(), 1000);
   }
 
   onUnblock(spot: any) {
     this.isPreload = true;
     this.api.unBlockSpot(spot.id).subscribe(resp => {
-      this.data = resp;
-      this.isPreload = false;
-      this.cancelPopup();
-    })
+    });
+    this.cancelPopup();
+    setTimeout(() => this.loadData(), 1000);
   }
 
   getParkingSpotStatusIcon(spot: any) {
-    return spot.type === 1
-      ? 'done' : spot.type === 2
+    return spot.type === 0
+      ? 'done' : spot.type === 1
         ? 'error' : 'lock';
   }
 
@@ -57,9 +59,9 @@ export class AppComponent {
   }
 
   unblockSpot(pin: String) {
-    this.spotPassword[this.choosenSpot.id] ===  pin ?
+    this.spotPassword[this.choosenSpot.id] === pin ?
       this.onUnblock(this.choosenSpot)
-        : alert('Bledny PIN');
+      : alert('Bledny PIN');
   }
 
   cancelPopup() {
@@ -75,5 +77,12 @@ export class AppComponent {
   showUnblock(spot: any) {
     this.choosenSpot = spot;
     this.popup2.show();
+  }
+
+  private loadData() {
+    this.api.load(1).subscribe(resp => {
+      this.data.type = resp.valueOf();
+      this.isPreload = false;
+    });
   }
 }

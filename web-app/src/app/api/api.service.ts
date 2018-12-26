@@ -7,7 +7,7 @@ import {map} from "rxjs/operators";
   providedIn: 'root'
 })
 export class ApiService {
-  endpoint = 'http://127.0.0.1:5000/';
+  endpoint = 'http://www.aieozn.pl/sw/';
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -21,21 +21,15 @@ export class ApiService {
   }
 
   blockSpot(id): Observable<any> {
-    return this.http.get(this.endpoint + 'block/' + id).pipe(map(this.extractData));
+    return this.http.get(this.endpoint + 'book/' + id);
   }
 
 
   unBlockSpot(id): Observable<any> {
-    return this.http.get(this.endpoint + 'unblock/' + id).pipe(map(this.extractData));
+    return this.http.get(this.endpoint + 'unbook/' + id);
   }
 
-  load(): Observable<any> {
-    return this.http.get(this.endpoint).pipe(map(this.extractData));
-  }
-
-
-  private extractData(res: Response) {
-    let body = res;
-    return body || { };
+  load(id): Observable<any> {
+    return this.http.get(this.endpoint + 'isOccupied/' + id);
   }
 }

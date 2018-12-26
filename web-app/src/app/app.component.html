@@ -7,14 +7,14 @@
       <th>STAN</th>
       <th></th>
     </tr>
-    <tr *ngFor="let spot of data">
-      <th>{{spot.id}}</th>
+    <tr>
+      <th>{{data.id}}</th>
       <th>
-        <mat-icon color="primary" [innerHTML]="getParkingSpotStatusIcon(spot)"></mat-icon>
+        <mat-icon color="primary" [innerHTML]="getParkingSpotStatusIcon(data)"></mat-icon>
       </th>
       <th>
-        <button *ngIf="spot.type === 1" mat-raised-button (click)="showBlock(spot) ">Zablokuj</button>
-        <button *ngIf="spot.type === 3" mat-raised-button (click)="showUnblock(spot) ">Odblokuj</button>
+        <button *ngIf="data.type === 0" mat-raised-button (click)="showBlock(data) ">Zablokuj</button>
+        <button *ngIf="data.type === 2" mat-raised-button (click)="showUnblock(data) ">Odblokuj</button>
       </th>
     </tr>
   </table>
