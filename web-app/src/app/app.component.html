@@ -1,23 +1,32 @@
+<mat-toolbar color="primary" style="text-align: center">
+  <span>Welcome to Poznan Online City Parking APP!</span>
+</mat-toolbar>
+
 <mat-progress-spinner *ngIf="isPreload" [color]="'warn'" [mode]="'indeterminate'"></mat-progress-spinner>
 
 <div *ngIf="!isPreload">
-  <table style="width:100%">
-    <tr>
-      <th>ID Miejsca</th>
-      <th>STAN</th>
-      <th></th>
-    </tr>
-    <tr>
-      <th>{{data.id}}</th>
-      <th>
-        <mat-icon color="primary" [innerHTML]="getParkingSpotStatusIcon(data)"></mat-icon>
-      </th>
-      <th>
-        <button *ngIf="data.type === 0" mat-raised-button (click)="showBlock(data) ">Zablokuj</button>
-        <button *ngIf="data.type === 2" mat-raised-button (click)="showUnblock(data) ">Odblokuj</button>
-      </th>
-    </tr>
-  </table>
+  <mat-card>
+    <mat-card-title>Parking spots List</mat-card-title>
+    <table matSort (matSortChange)="sortData($event)">
+      <tr style="text-align: center">
+        <th mat-sort-header="id">ID miejsca</th>
+        <th mat-sort-header="status">Status</th>
+        <th mat-sort-header="status">Zablokuj/Odblokuj</th>
+      </tr>
+
+      <tr *ngFor="let data of sortedData" >
+        <td>{{data.id}}</td>
+        <td>
+          <mat-icon color="primary" [innerHTML]="getParkingSpotStatusIcon(data)"></mat-icon>
+        </td>
+        <td>
+          <button *ngIf="data.type === 0" mat-raised-button (click)="showBlock(data) ">Zablokuj</button>
+          <button *ngIf="data.type === 2" mat-raised-button (click)="showUnblock(data) ">Odblokuj</button>
+          <ng-container *ngIf="data.type === 1">Miejsce zajęte!</ng-container>
+        </td>
+      </tr>
+    </table>
+  </mat-card>
 </div>
 <popup #popup1 (confirmClick)="blockSpot(pinBlock.value)" (cancelClick)="cancelPopup()">
   Podaj swój własny kod w celu blokady miejsca

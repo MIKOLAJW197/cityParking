@@ -4,7 +4,13 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {MatButtonModule, MatCheckboxModule, MatIconModule, MatProgressSpinnerModule} from "@angular/material";
+import {
+  MatButtonModule, MatCardModule,
+  MatCheckboxModule,
+  MatIconModule,
+  MatProgressSpinnerModule, MatSortModule, MatTableModule,
+  MatToolbarModule
+} from "@angular/material";
 
 
 import {PopupModule} from "ng2-opd-popup";
@@ -21,7 +27,11 @@ import {PopupModule} from "ng2-opd-popup";
     MatCheckboxModule,
     MatProgressSpinnerModule,
     MatIconModule,
-    PopupModule.forRoot()
+    PopupModule.forRoot(),
+    MatToolbarModule,
+    MatTableModule,
+    MatCardModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent]
